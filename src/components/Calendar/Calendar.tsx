@@ -1,23 +1,23 @@
 import Bar from "./Bar/Bar.tsx";
-import {useState} from "react";
+import {useContext, useState} from "react";
 import {AllTasksI, DayI} from "../../types/types.ts";
 import Day from "./Day/Day.tsx";
 import './calendar.css'
+import {PopupContext} from "../PopupRovider/PopupProvider.tsx";
+
+function getDaysInMonth(month: number, year: number) {
+    return new Date(year, month , 0).getDate();
+}
 
 const Calendar = () => {
-    const fullYear = new Date().getFullYear()
-    const month = new Date().getMonth()
+    const [fullYear, setFullYear] = useState(new Date().getFullYear())
+    const [month, setMonth] = useState(new Date().getMonth() + 1)
 
     const [date, setDate] = useState(getDaysInMonth(fullYear, month))
+    const {setPopupContext} = useContext<{isOpen: boolean, data: any}>(PopupContext);
 
-
-    function getDaysInMonth(month: number, year: number) {
-        return new Date(year, month + 1, 0).getDate();
-    }
-
-    console.log(date)
-    let day = 3
-    let data: AllTasksI = {}
+    const day = 3
+    const data: AllTasksI = {}
     data[fullYear] = {
         [month]: {
             [day]: {
@@ -35,15 +35,29 @@ const Calendar = () => {
             }
         }
     }
-    let ArrayDays = new Array(date).fill(null).map((_, i) => {
+    const ArrayDays = new Array(date).fill(null).map((_, i) => {
         return data[fullYear][month][day].day == i + 1 ? data[fullYear][month][day] : null
     })
+
+    function dateChange(year: number, month: number) {
+        setFullYear(year)
+        setMonth(month)
+        setDate(getDaysInMonth(month, year))
+    }
+
     return (
         <div>
-            <Bar year={fullYear} month={month}/>
+            <Bar dateChange={dateChange} year={fullYear} month={month}/>
             <div className='calendar__days'>
                 {ArrayDays.map((day: DayI | null, index) => <div>
-                    {day ? <Day day={day}/> : <div className='calendar__days__day-empty'>{index + 1}</div>}
+                    {day ? <Day day={day}/> : <div className='calendar__days__day-empty'
+                                                   onClick={() => setPopupContext({
+                                                       isOpen: true, data: {
+                                                           year: fullYear,
+                                                           month: month,
+                                                           day: index + 1
+                                                       }
+                                                   })}>{index + 1}</div>}
                 </div>)}
             </div>
 

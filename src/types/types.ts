@@ -25,5 +25,5 @@ export interface TaskI {
     title: string
     description: string
     time: string
-    color: string
+    color?: string
 }

@@ -1,13 +1,15 @@
 import {createContext, ReactNode, useState} from "react";
 
-export const PopupContext = createContext(true);
+export const PopupContext = createContext({isOpen: true, data: {}});
 
 const PopupProvider = ({children}: { children: ReactNode }) => {
-    const [context, setContext] = useState<boolean>(true);
-
+    const [popupContext, setPopupContext] = useState({
+        isOpen: true,
+        data: {}
+    });
 
     return (
-        <PopupContext.Provider value={{context, setContext}}>
+        <PopupContext.Provider value={{popupContext, setPopupContext}}>
             {children}
         </PopupContext.Provider>
     );

@@ -6,13 +6,13 @@ import {useContext} from "react";
 import {PopupContext} from "../../PopupRovider/PopupProvider.tsx";
 
 const Day = ({day}: { day: DayI }) => {
-    const {context, setContext} = useContext(PopupContext);
+    const {popupContext, setPopupContext} = useContext(PopupContext);
     return (
         <div className='calendar__days__day'>
             <h2>{day.day}</h2>
             <div>{day.tasks.map((el: TaskI, index) => <Task task={el} key={index}/>)}
             </div>
-            <ANIconButton onClick={() => setContext(true)}>+
+            <ANIconButton onClick={() => setPopupContext({isOpen: true, data: {...day}})}>+
                 {/*<svg width="16px" height="16px" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" fill="none"*/}
                 {/*     stroke="#9b9b9b">*/}
                 {/*    <g id="SVGRepo_bgCarrier" stroke-width="0"></g>*/}

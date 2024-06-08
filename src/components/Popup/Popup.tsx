@@ -1,34 +1,32 @@
 import './popup.css'
-import {useContext} from "react";
+import {FormEvent, useContext} from "react";
 import {PopupContext} from "../PopupRovider/PopupProvider.tsx";
 import ANIconButton from "../common/ANIconButton/ANIconButton.tsx";
 import ANButton from "../common/ANButton/ANButton.tsx";
 import {TaskI} from "../../types/types.ts";
 
 const Popup = () => {
-    const {context, setContext} = useContext<boolean>(PopupContext);
+    const {popupContext, setPopupContext} = useContext(PopupContext)
 
-    function handleSubmit(e: any) {
+    function handleSubmit(e: FormEvent) {
         e.preventDefault();
         const inputs = e.target as HTMLFormElement;
-        let data: TaskI = {}
+        const data: TaskI = { type: '', time: '', title: '', color: '', description: '' }
         Array.from(inputs).map((el) => {
             if (el instanceof HTMLInputElement) {
                 if (el.name === 'timeform' || el.name === 'timeto') {
-                    console.log('ok')
                     el.name === 'timeform' ? data.time = el.value : data.time += '-' + el.value
                 } else {
-                    data[el.name] = el.value
+                    data[el.name as keyof TaskI] = el.value
                 }
             }
         })
-        console.log(data)
     }
 
     return (
-        <>{context && <div className='popup' onClick={() => setContext(false)}>
+        <>{popupContext && <div className='popup' onClick={() => setPopupContext(false)}>
             <form onSubmit={handleSubmit} className='popup__content' onClick={(e) => e.stopPropagation()}>
-                <h1>Popup</h1>
+                <h2>{popupContext.data ? `${popupContext.data.day}.${popupContext.data.month}.${popupContext.data.year}` : 'Popup'}</h2>
                 <p>Название</p>
                 <input name='title'/>
                 <p>Описание</p>
