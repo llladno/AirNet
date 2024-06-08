@@ -1,0 +1,4 @@
+.calendar__days__day__task{
+    display: flex;
+    flex-direction: column;
+}
