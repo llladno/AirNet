@@ -18,8 +18,15 @@ class Store {
     }
 
     addTask(task: any) {
-        this.tasks[task.year][task.month][task.day].tasks.push(task.value)
+        console.log(task)
+        this.tasks[task.year][task.month][task.day].tasks.push({
+            title: task.title,
+            description: task.description,
+            time: task.time,
+            color: task.color,
+        })
+        console.log(this.tasks)
     }
 }
 
-export default Store
+export default new Store()

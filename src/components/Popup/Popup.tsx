@@ -1,9 +1,9 @@
 import './popup.css'
 import {FormEvent, useContext} from "react";
 import {PopupContext} from "../PopupRovider/PopupProvider.tsx";
-import ANIconButton from "../common/ANIconButton/ANIconButton.tsx";
 import ANButton from "../common/ANButton/ANButton.tsx";
 import {TaskI} from "../../types/types.ts";
+import Store from "../../store/store.ts";
 
 const Popup = () => {
     const {popupContext, setPopupContext} = useContext(PopupContext)
@@ -11,7 +11,7 @@ const Popup = () => {
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
         const inputs = e.target as HTMLFormElement;
-        const data: TaskI = { type: '', time: '', title: '', color: '', description: '' }
+        let data: TaskI = {type: '', time: '', title: '', color: '', description: ''}
         Array.from(inputs).map((el) => {
             if (el instanceof HTMLInputElement) {
                 if (el.name === 'timeform' || el.name === 'timeto') {
@@ -21,6 +21,9 @@ const Popup = () => {
                 }
             }
         })
+
+         data = {...data, day: popupContext.data.day, month: popupContext.data.month, year: popupContext.data.year}
+        Store.addTask(data,)
     }
 
     return (
