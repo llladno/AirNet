@@ -1,30 +1,68 @@
-# React + TypeScript + Vite
+# Выполненное задание для AirNet
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Описание проекта
 
-Currently, two official plugins are available:
+Этот проект представляет собой веб-приложение, разработанное с использованием следующих технологий:
+- React
+- TypeScript
+- Vite
+- Docker
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Проект включает в себя структуру папок для организации кода, включая компоненты, API вызовы, стили и типы.
 
-## Expanding the ESLint configuration
+## Структура проекта
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
-
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default {
-  // other rules...
-  parserOptions: {
-    ecmaVersion: 'latest',
-    sourceType: 'module',
-    project: ['./tsconfig.json', './tsconfig.node.json'],
-    tsconfigRootDir: __dirname,
-  },
-}
+```bash
+src/
+├── api/ # Папка для API вызовов
+├── assets/ # Папка для статических ресурсов (изображения, шрифты и т.д.)
+├── components/ # Папка для компонентов React
+├── helper/ # Папка для вспомогательных функций
+├── store/ # Папка для состояния и хранилища
+├── types/ # Папка для TypeScript типов и интерфейсов
+├── App.css # Стили для главного компонента приложения
+├── App.tsx # Главный компонент приложения
+├── index.css # Глобальные стили приложения
+├── main.tsx # Точка входа для приложения
+├── vite-env.d.ts # Типы окружения для Vite
 ```
 
-- Replace `plugin:@typescript-eslint/recommended` to `plugin:@typescript-eslint/recommended-type-checked` or `plugin:@typescript-eslint/strict-type-checked`
-- Optionally add `plugin:@typescript-eslint/stylistic-type-checked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and add `plugin:react/recommended` & `plugin:react/jsx-runtime` to the `extends` list
+## Установка и запуск проекта
+
+### Предварительные требования
+
+Убедитесь, что у вас установлены следующие инструменты:
+- Node.js
+- Docker
+
+### Установка зависимостей
+Для запуска проекта необходимо склонировать репозиторий [https://github.com/llladno/AirNet.git](https://github.com/llladno/AirNet.git)
+
+```bash
+git clone https://github.com/llladno/AirNet.git
+```
+
+Перейти в папку с проектом
+```bash
+cd AirNet
+```
+
+Для установки зависимостей выполните следующую команду:
+
+```bash
+npm install
+```
+### Запуск с использованием Docker
+
+Для сборки  Docker-образа необходимо выполнить команду:
+```bash
+docker build -t web .
+```
+
+Для запуска Docker-контейнера выполните следующую команду:
+```bash
+docker run -d -p 80:80 web
+```
+
+## Работа с приложением
+Для просмотра готового приложения необходимо перейти по адресу [localhost](http://localhost/) в браузере
