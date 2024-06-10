@@ -1,7 +1,11 @@
-import {ReactNode} from "react";
+import {ButtonHTMLAttributes, FC, ReactNode} from "react";
 import './ANButton.css'
 
-const AnButton = ({children, ...props}: {children: ReactNode}) => {
+interface ANButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+    children: ReactNode
+}
+
+const AnButton: FC<ANButtonProps> = ({children, ...props}: {children: ReactNode}) => {
     return (
         <button className='default__button' {...props}>
             {children}

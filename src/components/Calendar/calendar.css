@@ -1,9 +1,17 @@
 .calendar__days{
+    margin: 0 1%;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
+    gap: 3px;
 }
 
-.calendar__days__day-empty{
+.calendar__days__day-empty, .calendar__days__day-empty-disabled{
+    border-radius: 5px;
+    padding: 2px;
     border: 1px solid #000;
     height: 150px;
+}
+
+.calendar__days__day-empty-disabled{
+    background: #eeeeee;
 }

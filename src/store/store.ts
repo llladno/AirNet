@@ -16,11 +16,9 @@ class Store {
             this.tasks[task.year] = {};
         }
 
-        // Проверяем, существует ли месяц, если нет - создаем
         if (!this.tasks[task.year][task.month]) {
             this.tasks[task.year][task.month] = {};
         }
-        console.log(day)
         if (!this.tasks[task.year][task.month][task.day]) {
             this.tasks[task.year][task.month][task.day] = {...day, tasks: []};
         }
@@ -29,6 +27,12 @@ class Store {
             ...day,
             tasks: [...this.tasks[task.year][task.month][task.day].tasks, task]
         };
+        return {...this.tasks}
+    }
+
+    deleteTask(task: addTask): AllTasksI {
+        this.tasks[task.year][task.month][task.day].tasks = this.tasks[task.year][task.month][task.day].tasks.filter((el) =>  el.title !== task.title
+        )
         return {...this.tasks}
     }
 }

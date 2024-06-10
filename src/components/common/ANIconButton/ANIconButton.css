@@ -1,7 +1,12 @@
 .default__button-icon{
-    background: #e5e5e5;
-    color: #9b9b9b;
+    background: var(--background-color-button);
+    color: var(--color-text-button);
     border: none;
     border-radius: 8px;
     padding: 5px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
 }
+

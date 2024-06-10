@@ -6,5 +6,16 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
+}
+
+
+:root {
+
+
+    --backgound-save-button: #76c063;
+    --color-text: #000000;
+    --color-text-button: #9b9b9b;
+    --background-color-button: #e5e5e5;
+    --background-popup: rgba(0, 0, 0, 0.5);
 
 }

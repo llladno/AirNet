@@ -13,7 +13,7 @@ import {getDaysInMonth, getFirstDayOfWeek} from "../../helper/helper.ts";
 const Calendar = () => {
     const [fullYear, setFullYear] = useState(new Date().getFullYear())
     const [month, setMonth] = useState(new Date().getMonth() + 1)
-    const [arrayDays, setArrayDays] = useState([])
+    const [arrayDays, setArrayDays] = useState<(DayI | null)[] >([])
     const [emptyDays, setEmptyDays] = useState([])
 
     const {setPopupContext} = useContext<PopupContextI>(PopupContext);
@@ -21,25 +21,24 @@ const Calendar = () => {
 
     useEffect(() => {
         const storage = Store.tasks
-        const array = new Array(getDaysInMonth(month, fullYear)).fill(null).map((_, i) => {
+        const array: (DayI | null)[] = new Array(getDaysInMonth(month, fullYear)).fill(null).map((_, i) => {
             if (storage[fullYear] && storage[fullYear][month])
-                for (let b in storage[fullYear][month]){
+                for (const b in storage[fullYear][month]){
                     return +b == i + 1 ? storage[fullYear][month][b] : null
                 }
+            return null
         })
-        setEmptyDays(new Array(getFirstDayOfWeek(fullYear, month - 1)).fill(null))
-        setArrayDays(array)
+        setEmptyDays(new Array(getFirstDayOfWeek(fullYear, month - 1)).fill(null) as never)
+        setArrayDays(array )
     }, []);
 
     useEffect(() => {
         if (dataContext[fullYear] && dataContext[fullYear][month]){
-            for (let b in dataContext[fullYear][month]){
                 const monthData = dataContext[fullYear][month];
                 const updatedArrayDays = arrayDays.slice().map((day, index) => {
                     return monthData[index + 1] || day;
                 });
                 setArrayDays(updatedArrayDays);
-            }
         }
     }, [dataContext]);
 
@@ -49,28 +48,25 @@ const Calendar = () => {
         const storage = Store.tasks
         const array = new Array(getDaysInMonth(monthChange, year)).fill(null).map((_, i) => {
             if (storage[year] && storage[year][monthChange])
-                for (let b in storage[year][monthChange]){
+                for (const b in storage[year][monthChange]){
                     return +b == i + 1 ? storage[year][monthChange][b] : null
                 }
+            return null
         })
-        setEmptyDays(new Array(getFirstDayOfWeek(year, monthChange - 1)).fill(null))
+        setEmptyDays(new Array(getFirstDayOfWeek(year, monthChange - 1)).fill(null) as never)
         setArrayDays(array)
     }
+
+    const days = ['Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб', 'Вс'];
 
     return (
         <div>
             <Bar dateChange={dateChange} year={fullYear} month={month}/>
-            {<div className='calendar__days'>
-                    <div>Пн</div>
-                    <div>Вт</div>
-                    <div>Ср</div>
-                    <div>Чт</div>
-                    <div>Пт</div>
-                    <div>Сб</div>
-                    <div>Вс</div>
-                {emptyDays.map(()=> <div></div>)}
+            <div className='calendar__days'>
+                {days.map((day) => <div className='calendar__days__day-name' key={day}>{day}</div>)}
+                {emptyDays.map((_, index)=> <div className='calendar__days__day-empty-disabled' key={index}></div>)}
                 {arrayDays.map((day: DayI | null, index) => <div>
-                    {day ? <Day day={day}/> : <div className='calendar__days__day-empty'
+                    {day ? <Day key={index} day={day}/> : <div className='calendar__days__day-empty' key={index}
                                                    onClick={() => setPopupContext({
                                                        isOpen: true, data: {
                                                            year: fullYear,
@@ -79,7 +75,7 @@ const Calendar = () => {
                                                        }
                                                    })}>{index + 1}</div>}
                 </div>)}
-            </div>}
+            </div>
 
         </div>
     );

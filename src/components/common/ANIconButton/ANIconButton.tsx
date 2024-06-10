@@ -1,7 +1,11 @@
 import './ANIconButton.css'
-import {ReactNode} from "react";
+import {ButtonHTMLAttributes, FC, ReactNode} from "react";
 
-const ANIconButton = ({children, ...props}: {
+interface ANIconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement>{
+    children: ReactNode
+}
+
+const ANIconButton: FC<ANIconButtonProps> = ({children, ...props}: {
     children: ReactNode
 }) => {
     return (

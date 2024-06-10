@@ -1,5 +1,5 @@
 .default__button{
-    background: #76c063;
+    background: var(--backgound-save-button);
     color: #ffffff;
     border: none;
     border-radius: 8px;

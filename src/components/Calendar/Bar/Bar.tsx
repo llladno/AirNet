@@ -1,5 +1,7 @@
-const Bar = ({year, month, dateChange} : {year: number, month: number, dateChange: any}) => {
+import './bar.css'
+import ANIconButton from "../../common/ANIconButton/ANIconButton.tsx";
 
+const Bar = ({year, month, dateChange} : {year: number, month: number, dateChange: (year: number, month: number) => void}) => {
 
     function handleDate(num: number) {
         month += num
@@ -15,10 +17,10 @@ const Bar = ({year, month, dateChange} : {year: number, month: number, dateChang
     }
 
     return (
-        <div>
-            <button onClick={() => handleDate(-1)}>-</button>
-            <h2>0{month} {year}</h2>
-            <button onClick={() => handleDate(1)}>+</button>
+        <div className='calendar__bar'>
+            <ANIconButton onClick={() => handleDate(-1)}>-</ANIconButton>
+            <h2>{month} {year}</h2>
+            <ANIconButton onClick={() => handleDate(1)}>+</ANIconButton>
         </div>
     );
 };

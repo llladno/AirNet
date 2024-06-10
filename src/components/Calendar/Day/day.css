@@ -1,7 +1,24 @@
 .calendar__days__day{
+    border-radius: 5px;
+    padding: 2px;
     border: 1px solid #000;
     height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+.calendar__days__day h2{
+    font-size: 16px;
+}
+
+.calendar__days__day__tasks{
+    height: 100px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: gray lightgrey;
+}
+
+.calendar__days__day__tasks::-webkit-scrollbar{
+    width: 5px;
 }
