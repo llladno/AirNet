@@ -1,10 +1,23 @@
 import {createContext, ReactNode, useState} from "react";
 
-export const PopupContext = createContext({isOpen: true, data: {}});
+export interface PopupContextI {
+    popupContext: {
+        isOpen: boolean
+        data: any
+    }
+    setPopupContext: (data: any) => void
+}
+
+export const PopupContext = createContext<PopupContextI>({
+    popupContext: {
+        isOpen: false,
+        data: {}
+    },
+    setPopupContext: () => {}});
 
 const PopupProvider = ({children}: { children: ReactNode }) => {
     const [popupContext, setPopupContext] = useState({
-        isOpen: true,
+        isOpen: false,
         data: {}
     });
 

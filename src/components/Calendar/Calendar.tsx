@@ -1,55 +1,75 @@
 import Bar from "./Bar/Bar.tsx";
-import {useContext, useState} from "react";
-import {AllTasksI, DayI} from "../../types/types.ts";
+import {useContext, useEffect, useState} from "react";
+import { DayI} from "../../types/types.ts";
 import Day from "./Day/Day.tsx";
 import './calendar.css'
-import {PopupContext} from "../PopupRovider/PopupProvider.tsx";
+import {PopupContext, PopupContextI} from "../PopupProvider/PopupProvider.tsx";
+import {PopupDataContext, Props} from "../DataChangeProvider/DataChangeProvider.tsx";
+import Store from "../../store/store.ts";
+import {getDaysInMonth, getFirstDayOfWeek} from "../../helper/helper.ts";
 
-function getDaysInMonth(month: number, year: number) {
-    return new Date(year, month , 0).getDate();
-}
+
 
 const Calendar = () => {
     const [fullYear, setFullYear] = useState(new Date().getFullYear())
     const [month, setMonth] = useState(new Date().getMonth() + 1)
+    const [arrayDays, setArrayDays] = useState([])
+    const [emptyDays, setEmptyDays] = useState([])
 
-    const [date, setDate] = useState(getDaysInMonth(fullYear, month))
-    const {setPopupContext} = useContext<{isOpen: boolean, data: any}>(PopupContext);
+    const {setPopupContext} = useContext<PopupContextI>(PopupContext);
+    const {dataContext} = useContext<Props>(PopupDataContext);
 
-    const day = 3
-    const data: AllTasksI = {}
-    data[fullYear] = {
-        [month]: {
-            [day]: {
-                days: getDaysInMonth(month, fullYear),
-                year: fullYear,
-                month: month,
-                day: day,
-                dayOfWeek: new Date(fullYear, month, day).getDay(),
-                tasks: [{
-                    type: 'Срочный',
-                    title: 'Задача 1',
-                    description: 'Задача 1',
-                    time: '12:00-13:00',
-                }]
+    useEffect(() => {
+        const storage = Store.tasks
+        const array = new Array(getDaysInMonth(month, fullYear)).fill(null).map((_, i) => {
+            if (storage[fullYear] && storage[fullYear][month])
+                for (let b in storage[fullYear][month]){
+                    return +b == i + 1 ? storage[fullYear][month][b] : null
+                }
+        })
+        setEmptyDays(new Array(getFirstDayOfWeek(fullYear, month - 1)).fill(null))
+        setArrayDays(array)
+    }, []);
+
+    useEffect(() => {
+        if (dataContext[fullYear] && dataContext[fullYear][month]){
+            for (let b in dataContext[fullYear][month]){
+                const monthData = dataContext[fullYear][month];
+                const updatedArrayDays = arrayDays.slice().map((day, index) => {
+                    return monthData[index + 1] || day;
+                });
+                setArrayDays(updatedArrayDays);
             }
         }
-    }
-    const ArrayDays = new Array(date).fill(null).map((_, i) => {
-        return data[fullYear][month][day].day == i + 1 ? data[fullYear][month][day] : null
-    })
+    }, [dataContext]);
 
-    function dateChange(year: number, month: number) {
+    function dateChange(year: number, monthChange: number) {
         setFullYear(year)
-        setMonth(month)
-        setDate(getDaysInMonth(month, year))
+        setMonth(monthChange)
+        const storage = Store.tasks
+        const array = new Array(getDaysInMonth(monthChange, year)).fill(null).map((_, i) => {
+            if (storage[year] && storage[year][monthChange])
+                for (let b in storage[year][monthChange]){
+                    return +b == i + 1 ? storage[year][monthChange][b] : null
+                }
+        })
+        setEmptyDays(new Array(getFirstDayOfWeek(year, monthChange - 1)).fill(null))
+        setArrayDays(array)
     }
 
     return (
         <div>
             <Bar dateChange={dateChange} year={fullYear} month={month}/>
-            <div className='calendar__days'>
-                {ArrayDays.map((day: DayI | null, index) => <div>
+            {<div className='calendar__days'>
+                    <div>Пн</div>
+                    <div>Вт</div>
+                    <div>Ср</div>
+                    <div>Чт</div>
+                    <div>Пт</div>
+                    <div>Сб</div>
+                    <div>Вс</div>
+                {emptyDays.map(()=> <div></div>)}
+                {arrayDays.map((day: DayI | null, index) => <div>
                     {day ? <Day day={day}/> : <div className='calendar__days__day-empty'
                                                    onClick={() => setPopupContext({
                                                        isOpen: true, data: {
@@ -59,7 +79,7 @@ const Calendar = () => {
                                                        }
                                                    })}>{index + 1}</div>}
                 </div>)}
-            </div>
+            </div>}
 
         </div>
     );

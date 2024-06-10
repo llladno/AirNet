@@ -16,7 +16,6 @@ export interface DayI {
     year: number
     month: number
     day: number
-    dayOfWeek: number
     tasks: TaskI[]
 }
 
@@ -26,4 +25,15 @@ export interface TaskI {
     description: string
     time: string
     color?: string
+}
+
+export interface addTask {
+    color: string
+    description: string
+    time: string
+    title: string
+    type: string
+    day: number
+    month: number
+    year: number
 }

@@ -1,17 +1,28 @@
 import './popup.css'
 import {FormEvent, useContext} from "react";
-import {PopupContext} from "../PopupRovider/PopupProvider.tsx";
+import {PopupContext} from "../PopupProvider/PopupProvider.tsx";
 import ANButton from "../common/ANButton/ANButton.tsx";
-import {TaskI} from "../../types/types.ts";
+import {addTask, TaskI} from "../../types/types.ts";
 import Store from "../../store/store.ts";
+import {PopupDataContext, Props} from "../DataChangeProvider/DataChangeProvider.tsx";
 
 const Popup = () => {
     const {popupContext, setPopupContext} = useContext(PopupContext)
+    const {setDataContext} = useContext<Props>(PopupDataContext)
 
     function handleSubmit(e: FormEvent) {
         e.preventDefault();
         const inputs = e.target as HTMLFormElement;
-        let data: TaskI = {type: '', time: '', title: '', color: '', description: ''}
+        let data: addTask = {
+            color: '',
+            description: '',
+            time: '',
+            title: '',
+            type: '',
+            day: 0,
+            month: 0,
+            year: 0
+        }
         Array.from(inputs).map((el) => {
             if (el instanceof HTMLInputElement) {
                 if (el.name === 'timeform' || el.name === 'timeto') {
@@ -22,12 +33,12 @@ const Popup = () => {
             }
         })
 
-         data = {...data, day: popupContext.data.day, month: popupContext.data.month, year: popupContext.data.year}
-        Store.addTask(data,)
+        data = {...data, day: popupContext.data.day, month: popupContext.data.month, year: popupContext.data.year}
+        setDataContext(Store.addTask(data))
     }
 
     return (
-        <>{popupContext && <div className='popup' onClick={() => setPopupContext(false)}>
+        <>{popupContext.isOpen && <div className='popup' onClick={() => setPopupContext(false)}>
             <form onSubmit={handleSubmit} className='popup__content' onClick={(e) => e.stopPropagation()}>
                 <h2>{popupContext.data ? `${popupContext.data.day}.${popupContext.data.month}.${popupContext.data.year}` : 'Popup'}</h2>
                 <p>Название</p>

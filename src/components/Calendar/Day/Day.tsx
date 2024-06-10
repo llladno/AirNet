@@ -3,7 +3,7 @@ import Task from "./Task/Task.tsx";
 import './day.css'
 import ANIconButton from "../../common/ANIconButton/ANIconButton.tsx";
 import {useContext} from "react";
-import {PopupContext} from "../../PopupRovider/PopupProvider.tsx";
+import {PopupContext} from "../../PopupProvider/PopupProvider.tsx";
 
 const Day = ({day}: { day: DayI }) => {
     const {popupContext, setPopupContext} = useContext(PopupContext);
