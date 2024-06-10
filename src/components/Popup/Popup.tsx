@@ -46,7 +46,10 @@ const Popup = () => {
         <>{popupContext.isOpen && <div className='popup' onClick={() => setPopupContext(false)}>
             {!popupContext.data.title ?
                 <form onSubmit={handleSubmit} className='popup__content' onClick={(e) => e.stopPropagation()}>
-                    <h2>{popupContext.data ? `${popupContext.data.day}.${popupContext.data.month}.${popupContext.data.year}` : 'Popup'}</h2>
+                    <div className='popup__content__header'>
+                        <h2>{popupContext.data ? `${popupContext.data.day}.${popupContext.data.month}.${popupContext.data.year}` : 'Popup'}</h2>
+                    <ANIconButton style={{color: 'red'}} onClick={()=> setPopupContext(false)}>x</ANIconButton>
+                    </div>
                     <p>Название</p>
                     <input name='title'/>
                     <p>Описание</p>
@@ -54,7 +57,6 @@ const Popup = () => {
                     <p>Цвет</p>
                     <input name='color' type='color' defaultValue='#9b9b9b'/>
                     <p>Время</p>
-
                     <div>
                         C <input name='timeform' type='time'/> до <input name='timeto' type='time'/>
                     </div>

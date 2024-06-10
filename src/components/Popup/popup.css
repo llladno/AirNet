@@ -17,6 +17,14 @@
     border-radius: 5px;
 }
 
+.popup__content__header{
+    display: flex;
+    justify-content: space-between;
+}
+.popup__content__header button{
+    font-weight: 700;
+}
+
 
 .popup__content-task{
     display: flex;
